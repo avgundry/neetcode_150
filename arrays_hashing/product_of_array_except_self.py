@@ -2,15 +2,24 @@ from typing import List
 
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
-        #...how? lol
-        # Oooh I see. -30 <= nums[i] <= 30.
-        # So...yeah.
-        bucket = [0 for _ in range(62)]
-        for num in nums:
-            bucket[num + 30] += 1
+        n = len(nums)
 
-        print(bucket)
+        if n <= 2:
+            return [nums[1], nums[0]]
 
+        ret = [1 for _ in range(n)]
+
+        ret[1] = nums[0]
+        # technically constant space? or...no. hm.
+        for i in range(2, n):
+            ret[i] = ret[i - 1] * nums[i - 1]
+
+        post = 1
+        for i in range(n - 1, -1, -1):
+            ret[i] *= post
+            post *= nums[i]
+
+        return ret
 
 if __name__ == "__main__":
     s = Solution()
