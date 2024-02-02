@@ -3,15 +3,10 @@ from typing import List
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
         mp = dict()
-        # Hm
-        # Iterate over each number. Let dict[num] represent the longest
-        # length consecutive sequence that contains num.
-        # Then as we go through each num, we check if num - 1 or 
-        # num + 1 in list.
-        # If it is...then increment that by 1? Hm.
-        # Maybe, for each key num, store the range of consec elements..?
-        # No that's not O(n) time...wow I'm tired.
-
         
 
 
+if __name__ == "__main__":
+    s = Solution()
+    print(s.longestConsecutive([100,4,200,1,3,2]))
+    print(s.longestConsecutive([0,3,7,2,5,8,4,6,0,1]))
