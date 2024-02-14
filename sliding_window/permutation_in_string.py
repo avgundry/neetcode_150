@@ -22,8 +22,6 @@ class Solution:
             else:
                 left +=1 
 
-            # right += 1
-
             if c1.total() == 0:
                 return True
         
