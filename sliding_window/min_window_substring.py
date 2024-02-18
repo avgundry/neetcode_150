@@ -2,6 +2,8 @@ from collections import Counter
 
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
+        # TODO: Optimize to O(n); replace calls to (+t_count).total()
+        # with constant time function
         ns = len(s)
         nt = len(t)
 
@@ -27,33 +29,40 @@ class Solution:
         min_range = right - left
 
         # Loop until right is at the very end of list
+        # Loop invar: t in s[min_left: min_left + min_range]
         while right < ns:
             if left == right:
                 return ""
             if (+t_count).total() == 0:
-                # try to shrink.
+                # try to shrink while t in s[L:R].
+                # brute force for now
                 if s[left] in t_count and t_count[s[left]] < 0:
                     t_count[s[left]] += 1
-                    # min_left = left
-                elif s[left] in t_count:
+                    left += 1
+                    min_left = left
+                    min_range = right - left
+                elif s[left] not in t_count:
+                    left += 1
+                    min_left = left
+                    min_range = right - left
+                else:
+                    # guaranteed s[left] in t_count
+                    t_count[s[left]] += 1
+                    left += 1
                     if s[right] in t_count:
                         t_count[s[right]] -= 1
                     right += 1
-                    t_count[s[left]] += 1
-                # elif s[left] not in t_count:
-                #     left += 1
-                # else:
-                #     right += 1
-                # min_range = right - left
-                left += 1
-                if (right - left) < min_range:
-                    min_range = right - left
-                    min_left = left
             else:
+                # otherwise shift window to right
+                if s[left] in t_count:
+                    t_count[s[left]] += 1
                 left += 1
+                if s[right] in t_count:
+                    t_count[s[right]] -= 1
                 right += 1
+        
 
-        # SO close. Where am I going wrong
+
         if (+t_count).total() == 0:
             while left < right and (s[left] not in t_count or \
                 (s[left] in t_count and t_count[s[left]] < 0)):
