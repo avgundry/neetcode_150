@@ -4,16 +4,30 @@ import heapq
 
 
 class Solution:
-    class Deque:
-        def __init__(self) -> None:
-            self.dq = deque()
-            self.best = None
-        
-        def add_num(self, num):
-            self.dq.append(num, 0)????
-
-        
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        """Deque"""
+        ret = []
+        q = deque()
+        left = right = 0
+
+        while right < len(nums):
+            while q and nums[q[-1]] < nums[right]:
+                q.pop()
+            q.append(right)
+
+            if left > q[0]:
+                q.popleft()
+
+            if (right + 1) >= k:
+                ret.append(nums[q[0]])
+                left += 1
+
+            right += 1
+
+        return ret
+
+
+
         """Two pointers"""
         # Oh. Maybe simplest is easiest.
         biggest = float('-inf')
