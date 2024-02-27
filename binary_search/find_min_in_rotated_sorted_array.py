@@ -23,6 +23,7 @@ class Solution:
         # so just return that.
         return nums[(mid + 1) % n]
         
+        
 if __name__ == "__main__":
     s = Solution()
     print(s.findMin([3,4,5,1,2]))
