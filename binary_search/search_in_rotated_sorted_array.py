@@ -25,16 +25,9 @@ class Solution:
             else:
                 # end of array must be in right half of search window.
                 left = mid + 1
-
-        # Ok. So the "old" index can be translated to the "new" index as...
-        # (old + startind) % n = new?
-        # So if we had start = startind, (start + startind) % n...no.
-        # (new - startind) % n = old?
-        # Then: (start - startind) % n = 0 % n = 0.
-        # (end - startind) % n = (-1) % n = n - 1.
-        # Okay. That all tracks.
-        # Then...yeah...to find the middle. We'd have.
-        # ((left + right) // 2 - startind) % n.
+        
+        # Made mistake of translating indices before necessary
+        # Don't rotate L/R, only rotate mid when needed.
         start = mid + 1
         left = 0
         right = n - 1
