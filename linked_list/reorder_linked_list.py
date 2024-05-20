@@ -29,7 +29,6 @@ class Solution:
 
         curr = head 
         prev.next = None
-        print(f"mid: {mid}")
 
         # Reverse the right half of the list...
         prev = None
