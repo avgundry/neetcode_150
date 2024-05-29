@@ -14,7 +14,7 @@ class Solution:
         
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
         self.helper(root)
-        return max(self.best - 1, 0)
+        return self.best
 
     def helper(self, root: Optional[TreeNode]):
         if not root:
@@ -22,7 +22,7 @@ class Solution:
         # depth of left tree + depth of right tree
         l = self.helper(root.left)
         r = self.helper(root.right)
-        self.best = max(self.best, l + r + 1)
+        self.best = max(self.best, l + r)
         # return the max depth of this subtree
         return 1 + max(l, r)
         
