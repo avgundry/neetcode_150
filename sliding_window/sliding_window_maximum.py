@@ -5,89 +5,46 @@ import heapq
 
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
-        """Deque"""
+        """Deque solution"""
+        currmax = float('-inf')
+        dq = deque()
         ret = []
-        q = deque()
-        left = right = 0
 
-        while right < len(nums):
-            while q and nums[q[-1]] < nums[right]:
-                q.pop()
-            q.append(right)
+        for i in range(k):
+            currmax = max(currmax, nums[i])
+            dq.append(nums[i])
 
-            if left > q[0]:
-                q.popleft()
+        ret.append(currmax)
 
-            if (right + 1) >= k:
-                ret.append(nums[q[0]])
-                left += 1
 
-            right += 1
+        for i in range(k, len(nums)):
+            if dq.popleft() == currmax:
+                currmax = max(dq, default=float('-inf'))
+            currmax = max(currmax, nums[i])
+            dq.append(nums[i])
+            ret.append(currmax)
 
         return ret
 
 
 
-        """Two pointers"""
-        # Oh. Maybe simplest is easiest.
-        biggest = float('-inf')
-        left = right = 0
-        while right < k:
-            biggest = max(biggest, nums[right])
-            right += 1
+
+        """Brute force solution: iterate over each window"""
+        n = len(nums)
+        out = []
+
+        for i in range(n - k + 1):
+            window = nums[i:i + k]
+            out.append(max(window))
+
+        return out
 
         
-        """Hashmap solution"""
-        # I believe slightly better is to use a heap and dictionary in
-        # conjunction with one another. We can lazily delete from the
-        # heap in that case
-
-        # Used to quickly find the biggest element.
-        heap = []
-        # All numbers and their counts in the list
-        counts = Counter()
-        n = len(nums)
-        ret = []
-
-        for i in range(n):
-            heapq.heappush(heap, -nums[i])
-            counts[nums[i]] += 1
-            if i < k - 1:
-                continue
-            else:
-                while counts.total() > k: 
-                    counts[nums[i - k]] -= 1
-                # checks in O(1) time
-                while (-heap[0]) not in (+counts):
-                    # Pops in O(k) time.
-                    counts[-heap[0]] -= 1
-                    heapq.heappop(heap)
-                ret.append(-heap[0])
-
-        return ret
-
-
-        # """Brute force solution"""
-        # heap = []
-        # n = len(nums)
-        # ret = []
-        # for i in range(n):
-        #     heapq.heappush(heap, -nums[i])
-        #     if i == k - 1:
-        #         ret.append(-heap[0])
-        #     if i >= k:
-        #         # this is super brute force almost solely because of this:
-        #         # remove elements at each step.
-        #         # uses linear time, so it becomes O(nk) time
-        #         heap.remove(-nums[i - k])
-        #         heapq.heapify(heap)
-        #         ret.append(-heap[0])
-
-        # return ret
 
 if __name__ == "__main__":
     s = Solution()
     print(s.maxSlidingWindow([1,-1], 1))
+    print(s.maxSlidingWindow([1,3,-1,-3,5,3,6,7], 3))
 
 
         
