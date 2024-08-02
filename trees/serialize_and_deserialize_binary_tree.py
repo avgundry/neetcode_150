@@ -8,11 +8,10 @@ class TreeNode(object):
     def __repr__(self):
         return f"Val: {self.val}, Left: ({self.left}), Right: ({self.right})"
 
-temp = ""
 class Codec:
-    """
-    Working, but runs into out-of-memory error.
-    """
+    """Slower but more memory efficient solution. Used hints."""
+    class Codec:
+        
     def serialize(self, root):
         """Encodes a tree to a single string.
         
@@ -20,20 +19,20 @@ class Codec:
         :rtype: str
         """
         if root is None:
-            return None
-        return ','.join(self.serialize_helper(root, 0))
+            return ""
+        def serialize_helper(root):
+            if not root:
+                arr.append('#')
+                return
+    
+            arr.append(str(root.val))
+            serialize_helper(root.left)
+            serialize_helper(root.right)
 
-    def serialize_helper(self, root, i, arr=[]):
-        if root == None:
-            return
-        while len(arr) <= i:
-            arr.append("None")
-
-        arr[i] = str(root.val)
-        self.serialize_helper(root.left, 2 * i + 1, arr)
-        self.serialize_helper(root.right, 2 * i + 2, arr)
-
-        return arr
+        arr = []
+        serialize_helper(root)
+        return ','.join(arr)
+    
         
 
 
@@ -43,23 +42,75 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        if data is None:
+        if data == "":
             return None
         nodes = data.split(',')
-        n = len(nodes)
-        print(nodes)
-        root = self.buildTree(0, nodes)
-        return root
+        self.i = 0
 
-    def buildTree(self, i, data):
-        # Builds a root from nodes i and i + 1 
-        if i >= len(data) or data[i] == "None":
-            return
-        root = TreeNode(int(data[i]))
-        root.left = self.buildTree(2 * i + 1, data)
-        root.right = self.buildTree(2 * i + 2, data)
+        def buildTree():
+            # Builds a root from nodes i and i + 1 
+            if self.i >= len(nodes) or nodes[self.i] == "#":
+                self.i += 1
+                return None
+            root = TreeNode(int(nodes[self.i]))
+            self.i += 1
+            root.left = buildTree()
+            root.right = buildTree()
+    
+            return root
 
-        return root
+        return buildTree()
+
+    """
+    Working, but runs into out-of-memory error.
+    """
+    # def serialize(self, root):
+    #     """Encodes a tree to a single string.
+        
+    #     :type root: TreeNode
+    #     :rtype: str
+    #     """
+    #     if root is None:
+    #         return None
+    #     return ','.join(self.serialize_helper(root, 0))
+
+    # def serialize_helper(self, root, i, arr=[]):
+    #     if root == None:
+    #         return
+    #     while len(arr) <= i:
+    #         arr.append("None")
+
+    #     arr[i] = str(root.val)
+    #     self.serialize_helper(root.left, 2 * i + 1, arr)
+    #     self.serialize_helper(root.right, 2 * i + 2, arr)
+
+    #     return arr
+        
+
+
+    # def deserialize(self, data):
+    #     """Decodes your encoded data to tree.
+        
+    #     :type data: str
+    #     :rtype: TreeNode
+    #     """
+    #     if data is None:
+    #         return None
+    #     nodes = data.split(',')
+    #     n = len(nodes)
+    #     print(nodes)
+    #     root = self.buildTree(0, nodes)
+    #     return root
+
+    # def buildTree(self, i, data):
+    #     # Builds a root from nodes i and i + 1 
+    #     if i >= len(data) or data[i] == "None":
+    #         return
+    #     root = TreeNode(int(data[i]))
+    #     root.left = self.buildTree(2 * i + 1, data)
+    #     root.right = self.buildTree(2 * i + 2, data)
+
+    #     return root
         
 
 # Your Codec object will be instantiated and called as such:
