@@ -2,7 +2,22 @@ from typing import List
 
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        """Bottom-up dp approach"""
+        """Two-pointer approach, O(n) time and O(1) space"""
+        n = len(nums)
+        if n <= 2:
+            return max(nums)
+        prev = nums[0]
+        curr = max(nums[0], nums[1])
+
+        for i in range(2, n):
+            temp = prev
+            prev = curr
+            curr = max(temp + nums[i], curr)
+
+
+        return curr
+
+        """Bottom-up dp approach, O(n) time and space"""
         # Let dp[i] represent the maximum amount of money obtainable by robbing
         # houses up to house[i].
         n = len(nums)
